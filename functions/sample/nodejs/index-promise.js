@@ -1,13 +1,14 @@
+const { CloudantV1 } = require('@ibm-cloud/cloudant');
+const { IamAuthenticator } = require('ibm-cloud-sdk-core');
+
 function main(params) {
     // console.log(params);
     return new Promise(function (resolve, reject) {
-        const { CloudantV1 } = require('@ibm-cloud/cloudant');
-        const { IamAuthenticator } = require('ibm-cloud-sdk-core');
-        const authenticator = new IamAuthenticator({ apikey: "8S5qZnOKRcp7Et2V-GVz3-WDcW6r532KxoofuTsKwzgp" })
+    const authenticator = new IamAuthenticator({ apikey: params.IAM_API_KEY })
         const cloudant = CloudantV1.newInstance({
             authenticator: authenticator
         });
-        cloudant.setServiceUrl("https://62180913-21a9-4ebe-b3f9-90a10f70b047-bluemix.cloudantnosqldb.appdomain.cloud");
+    cloudant.setServiceUrl(params.COUCH_URL);
         if (params.state) {
             // return dealership with this state 
             cloudant.postFind({db:'dealerships',selector:{state:params.state}})
